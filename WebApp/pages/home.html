@@ -1,0 +1,100 @@
+<div class="container">
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="table">
+			<div class="table-cell">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+							<h4 class="modal-title" id="myModalLabel">Editando tarefa {{tarefaEditar.DesTitulo}}</h4>
+						</div>
+						<div class="modal-body">
+							<label for="DesTitulo">Titulo Tarefa</label>
+							<input class="form-control" name="DesTitulo" type="text" ng-model="tarefaEditar.DesTitulo" ng-required="true" placeholder="Titulo" />
+							<label for="DesDescricao">Descrição Tarefa</label>
+    						<input class="form-control" name="DesDescricao" type="text" ng-model="tarefaEditar.DesDescricao" ng-required="true" placeholder="Descricao"/>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+							<button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="salvaEdicao(tarefaEditar)">Salvar</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<section class="content">
+			<div class="col-md-8 col-md-offset-2">
+				<div class="panel panel-default">
+					<div class="table-container">
+						<table class="table table-filter">
+							<tbody>
+								<tr  ng-repeat="tarefa in tasks">
+									<td width="85%">
+										<table>
+											<tbody>
+												<tr>
+													<td width="70%">
+														<h2 class="title">
+															<b>{{tarefa.DesTitulo}}</b>
+															
+														</h4>
+														<p class="summary">{{tarefa.DesDescricao}}</p>
+													</td>
+													<td>
+														<div class="media">
+															<a href="#" class="pull-left">
+															</a>
+															<div id="dtCria" class="media-body">
+																<span class="pull-right date-display-single"><b>Criado :</b>{{tarefa.DatCriacao.replace('/Date(','').replace(')/','') | date:"dd/MM/yyyy" }}</span>
+																<br>
+																<span id="dtUltAlt" ng-show="tarefa.DatCriacao != tarefa.DatUltAlteracao" class="pull-right date-display-single"><b>Alterado :</b>{{tarefa.DatUltAlteracao.replace('/Date(','').replace(')/','') | date:"dd/MM/yyyy" }}</span>
+																<br>
+																<span class="pull-right {{tarefa.IndStatus}}"><b>Status :</b>
+																<span ng-switch="tarefa.IndStatus">
+																  <span ng-switch-when="C">
+																	Concluída
+																  </span>
+																  <span ng-switch-when="E">
+																	Em Andamento
+																  </span>
+																  <span ng-switch-when="N">
+																	Nova
+																  </span>
+																  <span ng-switch-default>
+																	Nova
+																  </span>
+																</span>
+																</span>
+																<br>
+																<span id="dtConc" ng-show="tarefa.IndStatus == 'C'" class="pull-right date-display-single"><b>Concluído :</b>{{tarefa.DatConclusao.replace('/Date(','').replace(')/','') | date:"dd/MM/yyyy" }}</span>
+															</div>
+														</div>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</td>
+									<td>
+										<button type="button" ng-disabled="tarefa.IndStatus == 'C'"  class=" btn-flag btn btn-default" title="Altera tarefa."  data-toggle="modal" ng-click="setTarefaEidtar(tarefa)" data-target="#myModal">
+											<i class="fa fa-pencil" aria-hidden="true"></i>
+										</button>
+										<button type="button" ng-disabled="tarefa.IndStatus == 'C' || tarefa.IndStatus == 'E'" class=" btn-flag btn btn-flag btn-warning btn-filter" width="24" height="24" title="Inicia tarefa." ng-click="actionTask(tarefa,'EmAndamento')">
+											<i class="fa fa-flag-o" aria-hidden="true"></i>
+										</button>
+										<button type="button" ng-disabled="tarefa.IndStatus == 'C'" class="btn btn-flag btn-success btn-filter" title="Conclui tarefa." ng-click="actionTask(tarefa,'Concluida')">
+											<i class="fa fa-flag-checkered" aria-hidden="true"></i>
+										</button>
+										<button type="button" ng-disabled="tarefa.IndStatus != 'C' " class="btn btn-flag btn-danger btn-filter" title="Elimina tarefa." ng-click="actionTask(tarefa,'Eliminar')">
+											<i class="fa fa-trash-o" aria-hidden="true"></i>
+										</button>
+
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
